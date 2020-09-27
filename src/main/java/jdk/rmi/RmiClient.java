@@ -15,9 +15,9 @@ import java.rmi.RemoteException;
 public class RmiClient {
 
     public static void main(String[] args) throws RemoteException, MalformedURLException, NotBoundException {
-        MyRemoteInterface obj = (MyRemoteInterface)Naming.lookup("Hello");
-        System.out.println(obj.sayName());
-
+        MyRemoteInterface obj = (MyRemoteInterface) Naming.lookup("rmi://localhost:6666/obj");
+        String name = obj.sayName();
+        System.out.println(name);
     }
 
 }

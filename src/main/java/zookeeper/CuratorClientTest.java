@@ -2,11 +2,17 @@
 
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.framework.recipes.leader.LeaderLatch;
+import org.apache.curator.retry.BoundedExponentialBackoffRetry;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.ZooDefs.Ids;
+import org.junit.Test;
 
-/**
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+ /**
  * @author 胡鹏
  * @date 2020/09/08
  */
@@ -69,5 +75,19 @@ public class CuratorClientTest {
                 result instanceof byte[]
                     ? new String((byte[]) result)
                         : result);
+    }
+
+    @Test
+    public void leaderLatchTest() throws Exception {
+
+        CuratorFramework curatorFramework = CuratorFrameworkFactory.newClient("127.0.0.1:2181", new ExponentialBackoffRetry(1000, 3));
+        curatorFramework.start();
+        LeaderLatch leaderLatch = new LeaderLatch(curatorFramework, "/leaderLatchTest");
+        leaderLatch.start();
+        boolean b = leaderLatch.hasLeadership();
+        leaderLatch.await(2, TimeUnit.SECONDS);
+        boolean b1 = leaderLatch.hasLeadership();
+        leaderLatch.close();
+        System.out.println("结束");
     }
 }

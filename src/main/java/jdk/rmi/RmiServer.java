@@ -1,8 +1,10 @@
 package jdk.rmi;
 
+import java.net.MalformedURLException;
+import java.rmi.AlreadyBoundException;
+import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 
 /**
  * @ClassName: RmiClient
@@ -12,10 +14,10 @@ import java.rmi.registry.Registry;
  */
 public class RmiServer {
 
-    public static void main(String[] args) throws RemoteException {
-        MyRemoteInterface obj = new MyRemoteObject("胡鹏"); // #1
-        Registry registry = LocateRegistry.createRegistry(1099); // #3
-        registry.rebind("Hello", obj); // #4
+    public static void main(String[] args) throws RemoteException, AlreadyBoundException, MalformedURLException {
+        LocateRegistry.createRegistry(6666);
+        MyRemoteInterface obj = new MyRemoteObject("胡鹏hp");
+        Naming.bind("rmi://localhost:6666/obj", obj);
     }
 
 }
