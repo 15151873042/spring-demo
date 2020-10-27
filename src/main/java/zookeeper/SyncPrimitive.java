@@ -26,7 +26,7 @@ public class SyncPrimitive implements Watcher {
                 mutex = new Integer(-1);
                 System.out.println("Finished starting ZK: " + zk);
             } catch (IOException e) {
-                System.out.println(e.toString());
+                e.printStackTrace();
                 zk = null;
             }
         }

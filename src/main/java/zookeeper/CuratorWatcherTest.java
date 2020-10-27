@@ -14,8 +14,8 @@ import org.apache.curator.retry.RetryNTimes;
   */
 public class CuratorWatcherTest {
     /** Zookeeper info */
-    private static final String ZK_ADDRESS = "127.0.0.1:2181";
-    private static final String ZK_PATH = "/hp";
+    private static final String ZK_ADDRESS = "192.168.92.131:2181";
+    private static final String ZK_PATH = "/brokers/ids";
 
     public static void main(String[] args) throws Exception {
         // 1.Connect to zk

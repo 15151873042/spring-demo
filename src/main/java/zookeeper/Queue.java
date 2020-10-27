@@ -34,11 +34,9 @@ public class Queue extends SyncPrimitive {
                             CreateMode.PERSISTENT);
                 }
             } catch (KeeperException e) {
-                System.out
-                        .println("Keeper exception when instantiating queue: "
-                                + e.toString());
+                e.printStackTrace();
             } catch (InterruptedException e) {
-                System.out.println("Interrupted exception");
+                e.printStackTrace();
             }
         }
     }
@@ -57,9 +55,8 @@ public class Queue extends SyncPrimitive {
         // Add child with value i
         b.putInt(i);
         value = b.array();
-        zk.create(root + "/element", value, Ids.OPEN_ACL_UNSAFE,
-                    CreateMode.PERSISTENT_SEQUENTIAL);
-
+        String path = zk.create(root + "/element", value, Ids.OPEN_ACL_UNSAFE,
+                CreateMode.PERSISTENT_SEQUENTIAL);
         return true;
     }
 
@@ -112,16 +109,20 @@ public class Queue extends SyncPrimitive {
         Integer max = new Integer(5);
         
         boolean addFlag = true;
-
+        try {
+            Thread.sleep(20000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (addFlag) {
             System.out.println("Producer");
             for (i = 0; i < max; i++)
                 try{
                     q.produce(10 + i);
                 } catch (KeeperException e){
-
+                    e.printStackTrace();
                 } catch (InterruptedException e){
-
+                    e.printStackTrace();
                 }
         } else {
             System.out.println("Consumer");
